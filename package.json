@@ -1,0 +1,25 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "detranpe:start": "ts-node -e \"require('./src/index.ts').handler({clientId: 1, debitTypeId: 6, debitType: 'detranPE', document: '04151759417', licensePlate: 'PFJ7699', registryId: '00258896353'})\"",
+    "start": "npx ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^1.4.0",
+    "node-html-parser": "^6.1.5",
+    "pdf.js-extract": "^0.2.1",
+    "puppeteer": "^20.8.3",
+    "ts-retry": "^4.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
