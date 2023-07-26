@@ -73,6 +73,7 @@ const convertToEncodedPortalAccess = (portalAccessData: PortalAccessData) => {
 };
 
 export const botDetrans = async () => {
+
   try {
     const { token, expiration, plate } = await getAccessToken();
 
@@ -111,10 +112,9 @@ export const botDetrans = async () => {
       const index = extractedData.pages[0].content.findIndex((t) => t.y === 547.044653688 && t.str.replace(/\D/g, ''));
       return index + 2 === i;
   })[0].str;
-  
+
     console.log("Valor Cobrado:",amountCharged);
     console.log("Barcode:",barcode);
-    
   } catch (error) {
     console.error("Ocorreu um erro:", error);
   }
