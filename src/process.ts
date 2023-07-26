@@ -96,7 +96,8 @@ export const botDetrans = async () => {
       firstPage: 0,
     });
 
-    console.log(extractedData);
+    const contentPDF = extractedData.pages[0].content;
+    console.log(contentPDF)
 
   } catch (error) {
     console.error("Ocorreu um erro:", error);
