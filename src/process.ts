@@ -48,6 +48,8 @@ const getPdfData = async (token: string, portalAccess: string, code: string, pla
 
   const URL_PDF = "https://servicos.dnit.gov.br/services-sior/gru/infracao/emitir?codigo="+ code + "&auto=" + auto + "&nomeUsuario=" + plate + "%20(Portal%20Multas)&token=" + token;
   
+  console.log(URL_PDF);
+  
   try {
     const response = await axios.get(
       URL_PDF, 
@@ -73,7 +75,7 @@ const convertToEncodedPortalAccess = (portalAccessData: PortalAccessData) => {
 };
 
 export const botDetrans = async () => {
-
+  
   try {
     const { token, expiration, plate } = await getAccessToken();
 
