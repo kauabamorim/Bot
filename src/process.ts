@@ -101,9 +101,14 @@ export const botDetrans = async () => {
       firstPage: 0,
     });
 
-    const contentPDF = extractedData.pages[0].content;
-    console.log(contentPDF)
-
+    const amountCharged = extractedData.pages[0].content.filter((element , i) => {
+      const index = extractedData.pages[0].content.findIndex((pdf) => pdf.str == "(=) Valor Cobrado")
+      return index + 2 === i;
+    });
+    const barcode = extractedData.pages[0].content.find((pdfContent) => pdfContent.x === 275.16881095575 && pdfContent.y === 547.044653688)?.str;
+    console.log("Valor Cobrado:",amountCharged);
+    console.log("Barcode:",barcode);
+    
   } catch (error) {
     console.error("Ocorreu um erro:", error);
   }
