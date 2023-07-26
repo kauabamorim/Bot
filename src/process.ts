@@ -45,14 +45,15 @@ const getInfractionData = async (token: string) => {
   }
 };
 
-const getPdfData = async (token: string) => {
+const getPdfData = async (token: string, portalAccess: string) => {
   try {
     const response = await axios.get(
-      "https://servicos.dnit.gov.br/services-sior/gru/infracao/emitir?codigo=Dc2vDN0Kv-qeRFV_HHSj6Q==&auto=S029956158&nomeUsuario=OZG7778%20(Portal%20Multas)&token=eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiItMSIsIlVzZXJOYW1lIjoiIiwiRW1haWwiOiIiLCJCaXJ0aGRhdGUiOiIiLCJQbGFjYSI6Ik9aRzc3NzgiLCJSZW5hdmFtIjoiMTAxMTIyMjIyOSIsIlVzZXJUeXBlIjoiUG9ydGFsUGxhY2EiLCJDcGZDbnBqIjoiIiwiWC1DbGllbnRJZCI6Ik9aRzc3NzgtMTAxMTIyMjIyOSIsImV4cCI6MTY5MDM1NjQ3OSwiaXNzIjoiUG9ydGFsTXVsdGFzRE5JVCJ9.CVSQQXaHfz_6FTYnXIzvVISfUzunt2KtkQScmkMq8ow", 
+      "", 
       {
         responseType: "arraybuffer",
         headers: {
           authorization: `Bearer ${token}`,
+          cookie: portalAccess,
         },
       }
     );
@@ -72,6 +73,7 @@ const convertToEncodedPortalAccess = (portalAccessData: PortalAccessData) => {
 export const botDetrans = async () => {
   try {
     const { token, expiration, plate } = await getAccessToken();
+
     const portalAccessData: PortalAccessData = { token, plate, expiration };
     const encodedPortalAccess = convertToEncodedPortalAccess(portalAccessData);
 
@@ -89,12 +91,13 @@ export const botDetrans = async () => {
     console.log("Valor Original:", firstInfraction.valorMultaOriginal);
 
     const pdfExtract = new PDFExtract();
-    const pdfData = await getPdfData(token);
+    const pdfData = await getPdfData(token, encodedPortalAccess);
     const extractedData = await pdfExtract.extractBuffer(pdfData, {
       firstPage: 0,
     });
 
     console.log(extractedData);
+
   } catch (error) {
     console.error("Ocorreu um erro:", error);
   }
