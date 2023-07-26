@@ -102,10 +102,11 @@ export const botDetrans = async () => {
     });
 
 
-    const amountCharged = (extractedData.pages[0].content.filter((_ , i) => {
+    const amountCharged = Number(extractedData.pages[0].content.filter((_ , i) => {
       const index = extractedData.pages[0].content.findIndex((pdf) => pdf.str == "(=) Valor Cobrado")
       return index + 2 === i;
-    })[0].str);
+    })[0].str.replace(/,/, ""));
+    
     const barcode = extractedData.pages[0].content.find((pdfContent) => pdfContent.x === 275.16881095575 && pdfContent.y === 547.044653688)?.str;
     console.log("Valor Cobrado:",amountCharged);
     console.log("Barcode:",barcode);
