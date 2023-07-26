@@ -1,6 +1,5 @@
 import axios from "axios";
 import { PDFExtract } from "pdf.js-extract";
-
 interface PortalAccessData {
   token: string;
   plate: string;
@@ -45,10 +44,13 @@ const getInfractionData = async (token: string) => {
   }
 };
 
-const getPdfData = async (token: string, portalAccess: string) => {
+const getPdfData = async (token: string, portalAccess: string, code: string, plate: string, auto: string) => {
+
+  const URL_PDF = "https://servicos.dnit.gov.br/services-sior/gru/infracao/emitir?codigo="+ code + "&auto=" + auto + "&nomeUsuario=" + plate + "%20(Portal%20Multas)&token=" + token;
+  
   try {
     const response = await axios.get(
-      "", 
+      URL_PDF, 
       {
         responseType: "arraybuffer",
         headers: {
@@ -80,7 +82,10 @@ export const botDetrans = async () => {
     const infractions = await getInfractionData(token);
     const firstInfraction = infractions[0];
 
-    console.log("Auto de Infração:", firstInfraction.numeroAuto);
+    const auto = firstInfraction.numeroAuto;
+    const code = firstInfraction.codigoProcessoEncrypted;
+
+    console.log("Auto de Infração:", auto);
     console.log("Descrição:", firstInfraction.enquadramento);
     console.log("Veículo:", firstInfraction.veiculoPlacaUF);
     console.log("Situação:", firstInfraction.situacaoFase);
@@ -91,7 +96,7 @@ export const botDetrans = async () => {
     console.log("Valor Original:", firstInfraction.valorMultaOriginal);
 
     const pdfExtract = new PDFExtract();
-    const pdfData = await getPdfData(token, encodedPortalAccess);
+    const pdfData = await getPdfData(token, encodedPortalAccess, code, plate, auto);
     const extractedData = await pdfExtract.extractBuffer(pdfData, {
       firstPage: 0,
     });
