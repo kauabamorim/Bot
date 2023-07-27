@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "detran:start": "ts-node -e \"require('./src/index.ts').botDetrans({licensePlate: 'OZG7778', registryId: '1011222229'})\"",
     "start": "ts-node src/index.ts"
   },
   "keywords": [],

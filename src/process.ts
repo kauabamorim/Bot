@@ -6,13 +6,13 @@ interface PortalAccessData {
   expiration: string;
 }
 
-const getAccessToken = async () => {
+const getAccessToken = async (placa: string, renavam: string) => {
   try {
     const response = await axios.post(
       "https://servicos.dnit.gov.br/auth-sior/renavam",
       {
-        placa: "OZG7778",
-        renavam: "1011222229",
+        placa: placa,
+        renavam: renavam,
       }
     );
 
@@ -46,9 +46,7 @@ const getInfractionData = async (token: string) => {
 
 const getPdfData = async (token: string, portalAccess: string, code: string, plate: string, auto: string) => {
 
-  const URL_PDF = "https://servicos.dnit.gov.br/services-sior/gru/infracao/emitir?codigo="+ code + "&auto=" + auto + "&nomeUsuario=" + plate + "%20(Portal%20Multas)&token=" + token;
-  
-  console.log(URL_PDF);
+  const URL_PDF = `https://servicos.dnit.gov.br/services-sior/gru/infracao/emitir?codigo=${code}&auto=${auto}&nomeUsuario=${plate}%20(Portal%20Multas)&token=${token}`;
   
   try {
     const response = await axios.get(
@@ -77,7 +75,7 @@ const convertToEncodedPortalAccess = (portalAccessData: PortalAccessData) => {
 export const botDetrans = async () => {
   
   try {
-    const { token, expiration, plate } = await getAccessToken();
+    const { token, expiration, plate } = await getAccessToken("OZG7778", "1011222229");
 
     const portalAccessData: PortalAccessData = { token, plate, expiration };
     const encodedPortalAccess = convertToEncodedPortalAccess(portalAccessData);
