@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "detran:start": "ts-node -e \"require('./src/index.ts').botDetrans({licensePlate: 'OZG7778', registryId: '1011222229'})\"",
-    "start": "ts-node src/index.ts"
+    "detran:start": "ts-node -e \"require('./src/process.ts').getAccessToken({licensePlate: 'OZG7778', registryId: '1011222229'})\"",
+    "start": "ts-node src/process.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +16,6 @@
     "axios": "^1.4.0",
     "node-html-parser": "^6.1.5",
     "pdf.js-extract": "^0.2.1",
-    "puppeteer": "^20.8.3",
     "ts-retry": "^4.2.1"
   },
   "devDependencies": {

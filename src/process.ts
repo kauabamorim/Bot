@@ -19,7 +19,6 @@ const getAccessToken = async (placa: string, renavam: string) => {
     const { token, expiration, placa: plate } = response.data;
     return { token, expiration, plate } as PortalAccessData;
 
-
   } catch (error) {
     console.error("Erro ao obter o token:", error);
     throw error;
@@ -104,7 +103,7 @@ export const botDetrans = async () => {
 
 
     const amountCharged = Number(extractedData.pages[0].content.filter((_ , i) => {
-      const index = extractedData.pages[0].content.findIndex((pdf) => pdf.str == "(=) Valor Cobrado")
+      const index = extractedData.pages[0].content.findIndex((pdf) => pdf.str === "(=) Valor Cobrado")
       return index + 2 === i;
     })[0].str.replace(/,/, ""));
     
@@ -119,3 +118,5 @@ export const botDetrans = async () => {
     console.error("Ocorreu um erro:", error);
   }
 };
+
+botDetrans();
