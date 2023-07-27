@@ -93,7 +93,8 @@ export const botDetrans = async () => {
     console.log("Amparo e Gravidade:", firstInfraction.gravidade);
     console.log("Local:", firstInfraction.local);
     console.log("Município:", firstInfraction.municipio);
-    console.log("Valor Original:", firstInfraction.valorMultaOriginal);
+    console.log("Valor Original:", Number(firstInfraction.valorMultaOriginal.replace(/\s*R\$\s*/, "").replace(/,/, "")));
+
 
     const pdfExtract = new PDFExtract();
     const pdfData = await getPdfData(token, encodedPortalAccess, code, plate, auto);
