@@ -88,20 +88,25 @@ export const botDetrans = async () => {
     let auto = "";
     let code = "";
     
+    const infractionsInfo = [];
+
     for (const infraction of infractions) {
-      auto = infraction.numeroAuto;
-      code = infraction.codigoProcessoEncrypted;
-    
-      console.log("Auto de Infração:", auto);
-      console.log("Descrição:", infraction.enquadramento);
-      console.log("Veículo:", infraction.veiculoPlacaUF);
-      console.log("Situação:", infraction.situacaoFase);
-      console.log("Data e Hora:", infraction.dataHora);
-      console.log("Amparo e Gravidade:", infraction.gravidade);
-      console.log("Local:", infraction.local);
-      console.log("Município:", infraction.municipio);
-      console.log("Valor Original:", Number(infraction.valorMultaOriginal.replace(/\s*R\$\s*/, "").replace(/,/, "")));
-    }
+      const infractionInfo = {
+      auto: infraction.numeroAuto,
+      code: infraction.codigoProcessoEncrypted,
+      descricao: infraction.enquadramento,
+      veiculo: infraction.veiculoPlacaUF,
+      situacao: infraction.situacaoFase,
+      dataHora: infraction.dataHora,
+      amparoGravidade: infraction.gravidade,
+      local: infraction.local,
+      municipio: infraction.municipio,
+      valorOriginal: Number(infraction.valorMultaOriginal.replace(/\s*R\$\s*/, "").replace(/,/, ""))
+  };
+  infractionsInfo.push(infractionInfo);
+}
+
+console.log(infractionsInfo);
 
     const pdfExtract = new PDFExtract();
     const pdfData = await getPdfData(token, encodedPortalAccess, code, plate, auto);
