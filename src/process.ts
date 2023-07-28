@@ -36,7 +36,11 @@ const getInfractionData = async (token: string) => {
       }
     );
 
+    for (const index of response.data.infracoes) {
+    }
+
     return response.data.infracoes;
+
   } catch (error) {
     console.error("Erro ao obter os dados de infração:", error);
     throw error;
@@ -74,27 +78,30 @@ const convertToEncodedPortalAccess = (portalAccessData: PortalAccessData) => {
 export const botDetrans = async () => {
   
   try {
-    const { token, expiration, plate } = await getAccessToken("OZG7778", "1011222229");
+    const { token, expiration, plate } = await getAccessToken("NEI9014", "538846933");
 
     const portalAccessData: PortalAccessData = { token, plate, expiration };
     const encodedPortalAccess = convertToEncodedPortalAccess(portalAccessData);
 
     const infractions = await getInfractionData(token);
-    const firstInfraction = infractions[0];
 
-    const auto = firstInfraction.numeroAuto;
-    const code = firstInfraction.codigoProcessoEncrypted;
-
-    console.log("Auto de Infração:", auto);
-    console.log("Descrição:", firstInfraction.enquadramento);
-    console.log("Veículo:", firstInfraction.veiculoPlacaUF);
-    console.log("Situação:", firstInfraction.situacaoFase);
-    console.log("Data e Hora:", firstInfraction.dataHora);
-    console.log("Amparo e Gravidade:", firstInfraction.gravidade);
-    console.log("Local:", firstInfraction.local);
-    console.log("Município:", firstInfraction.municipio);
-    console.log("Valor Original:", Number(firstInfraction.valorMultaOriginal.replace(/\s*R\$\s*/, "").replace(/,/, "")));
-
+    let auto = "";
+    let code = "";
+    
+    for (const infraction of infractions) {
+      auto = infraction.numeroAuto;
+      code = infraction.codigoProcessoEncrypted;
+    
+      console.log("Auto de Infração:", auto);
+      console.log("Descrição:", infraction.enquadramento);
+      console.log("Veículo:", infraction.veiculoPlacaUF);
+      console.log("Situação:", infraction.situacaoFase);
+      console.log("Data e Hora:", infraction.dataHora);
+      console.log("Amparo e Gravidade:", infraction.gravidade);
+      console.log("Local:", infraction.local);
+      console.log("Município:", infraction.municipio);
+      console.log("Valor Original:", Number(infraction.valorMultaOriginal.replace(/\s*R\$\s*/, "").replace(/,/, "")));
+    }
 
     const pdfExtract = new PDFExtract();
     const pdfData = await getPdfData(token, encodedPortalAccess, code, plate, auto);
